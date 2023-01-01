@@ -143,6 +143,5 @@ RUN go install mvdan.cc/sh/v3/cmd/shfmt@latest
 # Setup Neovim
 RUN nvim --headless +"TSUpdate" +qa
 
-RUN mkdir work
-WORKDIR /home/neovim/work
+WORKDIR /work
 ENTRYPOINT ["nvim"]

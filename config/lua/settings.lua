@@ -60,5 +60,5 @@ vim.opt.colorcolumn = "80"
 vim.cmd("highlight VirtColumn guifg=#204563 guibg=NONE gui=NONE")
 
 -- vimwiki
-vim.g.vimwiki_list = { { path = '~/Dropbox/notes', syntax = 'markdown', ext = '.md' } }
+vim.g.vimwiki_list = { { path = '/vimwiki', syntax = 'markdown', ext = '.md' } }
 vim.g.vimwiki_global_ext = 0

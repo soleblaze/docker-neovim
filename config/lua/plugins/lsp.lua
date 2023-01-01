@@ -19,7 +19,21 @@ return {
   config = function()
     local lsp = require('lsp-zero')
 
-    lsp.preset('recommended')
+    lsp.set_preferences({
+      suggest_lsp_servers = false,
+      setup_servers_on_start = true,
+      set_lsp_keymaps = false,
+      configure_diagnostics = true,
+      cmp_capabilities = true,
+      manage_nvim_cmp = true,
+      call_servers = 'global',
+      sign_icons = {
+        error = '✘',
+        warn = '▲',
+        hint = '⚑',
+        info = ''
+      }
+    })
 
     local cmp = require('cmp')
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')

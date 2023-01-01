@@ -1,5 +1,5 @@
 #!/bin/bash
-if ! [-d "$HOME/.cache/docker-nvim" ]; then
+if ! [ -d "$HOME/.cache/docker-nvim" ]; then
   mkdir -p "$HOME/.cache/docker-nvim"
 fi
 

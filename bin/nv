@@ -11,7 +11,7 @@ if [ $# -gt 0 ]; then
       -v "$HOME/Documents/vimwiki:/vimwiki" \
       -v "$HOME/.cache/docker-nvim:/nv" \
       -v "$(realpath "${FILE}"):/work/${FILE##*/}" \
-      soleblaze/neovim:latest \
+      ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}" "/work/${FILE##*/}"
   elif git -C "${!#}" rev-parse 2>/dev/null; then
     docker run --rm -it \
@@ -19,7 +19,7 @@ if [ $# -gt 0 ]; then
       -v "$HOME/Documents/vimwiki:/vimwiki" \
       -v "$HOME/.cache/docker-nvim:/nv" \
       -v "$(realpath ${!#}):/work" \
-      soleblaze/neovim:latest \
+      ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}"
   elif git -C "${PWD}" rev-parse 2>/dev/null; then
     docker run --rm -it \
@@ -27,7 +27,7 @@ if [ $# -gt 0 ]; then
       -v "$HOME/Documents/vimwiki:/vimwiki" \
       -v "$HOME/.cache/docker-nvim:/nv" \
       -v "$PWD:/work" \
-      soleblaze/neovim:latest \
+      ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}"
   fi
 elif git -C "${PWD}" rev-parse 2>/dev/null; then
@@ -36,7 +36,7 @@ elif git -C "${PWD}" rev-parse 2>/dev/null; then
     -v "$HOME/Documents/vimwiki:/vimwiki" \
     -v "$HOME/.cache/docker-nvim:/nv" \
     -v "$PWD:/work" \
-    soleblaze/neovim:latest \
+    ghcr.io/soleblaze/neovim:maint \
     +"Telescope find_files"
 else
   echo "Error: not a file or git repo"

@@ -5,7 +5,7 @@ return {
   config = function()
     require("nvim-treesitter.configs").setup({
       ensure_installed = "all",
-      sync_install = false,
+      sync_install = true,
       ignore_install = { "phpdoc" },
       context_commentstring = { enable = true },
       highlight = {

@@ -35,11 +35,11 @@ vim.opt.wrap = true -- Use word wrapping
 
 -- Set backup options
 vim.opt.backup = false
-vim.opt.backupdir = vim.fn.stdpath("config") .. "/.backup"
+vim.opt.backupdir = "/nv/backup"
 vim.opt.writebackup = false
 
 -- Undo settings
-vim.opt.undodir = vim.fn.stdpath("config") .. "/.undo"
+vim.opt.undodir = "/nv/undo"
 vim.opt.undofile = true
 vim.opt.undolevels = 1000
 vim.opt.undoreload = 10000

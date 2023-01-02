@@ -1,7 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   dependencies = { "p00f/nvim-ts-rainbow" },
-  run = ":TSUpdate",
   config = function()
     require("nvim-treesitter.configs").setup({
       ensure_installed = {
@@ -21,6 +20,7 @@ return {
         "jq",
         "json",
         "json5",
+        "lua",
         "make",
         "markdown",
         "markdown_inline",

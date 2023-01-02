@@ -12,6 +12,7 @@ vim.opt.ignorecase = true -- Ignore case
 vim.opt.incsearch = true
 vim.opt.joinspaces = false -- No double spaces with join
 vim.opt.linebreak = true -- Use line breaks
+vim.opt.mouse = "" -- Disable mouse
 vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = true
 vim.opt.rtp:append(vim.fn.stdpath("config") .. "/snippets") -- add snippet directory to rtp

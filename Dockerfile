@@ -6,10 +6,10 @@ RUN apt-get update && apt-get -y install locales \
   && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
   && dpkg-reconfigure locales \
   && update-locale LANG=en_US.UTF-8 \
-  && rm -rf /var/lib/apt/lists/* 
+  && rm -rf /var/lib/apt/lists/*
 
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update && apt-get full-upgrade -y \
@@ -25,16 +25,33 @@ RUN apt-get update && apt-get full-upgrade -y \
   python3-pip \
   ruby \
   ruby-dev \
-  && rm -rf /var/lib/apt/lists/*  \
-  && ln -s $(which fdfind) /usr/local/bin/fd
-
-# Install tools
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+  && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
   &&  curl -sLo /usr/share/keyrings/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg \
   && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
   && apt-get update && apt-get install -y gh nodejs \
-  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /var/lib/apt/lists/*  \
+  && ln -s $(which fdfind) /usr/local/bin/fd
+
+# Install tools
+RUN curl -sLo /usr/local/bin/marksman https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux \
+  && chmod 755 /usr/local/bin/marksman \
+  && curl -sLo /shellcheck.tgz https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz \
+  && tar xf /shellcheck.tgz \
+  && mv /shellcheck-stable/shellcheck /usr/local/bin \
+  && rm -rf /shellcheck.tgz /shellcheck-stable \
+  && curl -sLo /tlsp.tgz https://github.com/juliosueiras/terraform-lsp/releases/download/v0.0.12/terraform-lsp_0.0.12_linux_amd64.tar.gz \
+  && mkdir /tlsp \
+  && tar -C /tlsp -xf /tlsp.tgz \
+  && mv /tlsp/terraform-lsp /usr/local/bin \
+  && rm -rf /tlsp \
+  && curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash \
+  && curl -sLo /usr/local/bin/tree-sitter.gz https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz \
+  && gunzip /usr/local/bin/tree-sitter.gz \
+  && chmod 755 /usr/local/bin/tree-sitter \
+  && curl -sLo /fzf.tgz https://github.com/junegunn/fzf/releases/download/0.35.1/fzf-0.35.1-linux_amd64.tar.gz \
+  && tar -C /usr/local/bin -xf /fzf.tgz \
+  && rm /fzf.tgz \
   && curl -sLo /nvim.tgz https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
   && mkdir /neovim \
   && tar xf /nvim.tgz \
@@ -58,52 +75,25 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
   && npm install -g sql-language-server \
   && npm install -g vscode-langservers-extracted \
   && npm install -g write-good \
-  && npm install -g yaml-language-server \
-  && curl -sLo /luals.tgz https://github.com/sumneko/lua-language-server/releases/download/3.6.4/lua-language-server-3.6.4-linux-x64.tar.gz \
-  && mkdir /luals \
-  && tar -C /luals -xf /luals.tgz \
-  && mv /luals/bin/lua-language-server /usr/local/bin \
-  && rm -rf /luals \
-  && curl -sLo /usr/local/bin/marksman https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux \
-  && chmod 755 /usr/local/bin/marksman \
-  && curl -sLo /shellcheck.tgz https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz \
-  && tar xf /shellcheck.tgz \
-  && mv /shellcheck-stable/shellcheck /usr/local/bin \
-  && rm -rf /shellcheck.tgz /shellcheck-stable \
-  && curl -sLo /tlsp.tgz https://github.com/juliosueiras/terraform-lsp/releases/download/v0.0.12/terraform-lsp_0.0.12_linux_amd64.tar.gz \
-  && mkdir /tlsp \
-  && tar -C /tlsp -xf /tlsp.tgz \
-  && mv /tlsp/terraform-lsp /usr/local/bin \
-  && rm -rf /tlsp \
-  && curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash \
-  && curl -sLo /usr/local/bin/tree-sitter.gz https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz \
-  && gunzip /usr/local/bin/tree-sitter.gz \
-  && chmod 755 /usr/local/bin/tree-sitter \
-  && curl -sLo /fzf.tgz https://github.com/junegunn/fzf/releases/download/0.35.1/fzf-0.35.1-linux_amd64.tar.gz \
-  && tar -C /usr/local/bin -xf /fzf.tgz \
-  && rm /fzf.tgz
+  && npm install -g yaml-language-server
 
 # User Setup
 RUN groupadd neovim && useradd -g neovim -ms /bin/bash neovim \
   && mkdir -p /home/neovim/.config/yamllint
 
-# Setup neovim configs
-COPY config /home/neovim/.config/nvim
-COPY linters/golangci.yml /home/neovim/.golangci.yml
-COPY linters/markdownlint.yaml /home/neovim/.markdownlint.yaml
-COPY linters/yamllint.yml /home/neovim/.config/yamllint/config
-
-RUN chown -R neovim:neovim /home/neovim
-
 USER neovim
 WORKDIR /home/neovim
 ENV HOME="/home/neovim"
-ENV PATH="$PATH:/usr/local/go/bin:/nvim/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.local/bin"
+ENV PATH="$PATH:/usr/local/go/bin:/nvim/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/luals/bin"
 
 RUN cargo install --features lsp --locked taplo-cli
 
 # Install go binaries
-RUN go install github.com/abenz1267/gomvp@latest \
+RUN curl -sLo /home/neovim/luals.tgz https://github.com/sumneko/lua-language-server/releases/download/3.6.4/lua-language-server-3.6.4-linux-x64.tar.gz \
+  && mkdir /home/neovim/luals \
+  && tar -C /home/neovim/luals -xf /home/neovim/luals.tgz \
+  && rm -rf /home/neovim/luals.tgz \
+  && go install github.com/abenz1267/gomvp@latest \
   && go install github.com/cweill/gotests/...@latest \
   && go install github.com/davidrjenni/reftools/cmd/fillstruct@latest \
   && go install github.com/davidrjenni/reftools/cmd/fillswitch@latest \
@@ -122,7 +112,6 @@ RUN go install github.com/abenz1267/gomvp@latest \
   && go install golang.org/x/tools/cmd/gorename@latest \
   && go install golang.org/x/tools/cmd/guru@latest \
   && go install golang.org/x/tools/gopls@latest \
-  && go install golang.org/x/tools/gopls@latest \
   && go install golang.org/x/vuln/cmd/govulncheck@latest \
   && go install gotest.tools/gotestsum@latest \
   && go install mvdan.cc/gofumpt@latest \
@@ -132,7 +121,16 @@ RUN go install github.com/abenz1267/gomvp@latest \
   && pip3 install --user cmake-language-server \
   && pip3 install --user pyright
 
+COPY linters/golangci.yml /home/neovim/.golangci.yml
+COPY linters/markdownlint.yaml /home/neovim/.markdownlint.yaml
+COPY linters/yamllint.yml /home/neovim/.config/yamllint/config
+COPY config /home/neovim/.config/nvim
+
+USER root
+RUN chown -R neovim:neovim /home/neovim
+
 # Setup Neovim
+USER neovim
 RUN nvim --headless +"TSUpdate" +qa
 
 WORKDIR /work

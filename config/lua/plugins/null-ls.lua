@@ -34,7 +34,5 @@ return {
         }),
       },
     })
-
-    vim.g.nullLsFormat = 1
   end,
 }

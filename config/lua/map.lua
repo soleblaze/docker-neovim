@@ -47,16 +47,18 @@ map("n", "<leader>P", '"+P')
 map("n", "<leader>d", "<cmd>bdelete!<cr>")
 map("n", "<leader>p", '"+p')
 map("n", "<leader>rv", "<cmd>source $MYVIMRC<cr>")
-map("n", "<leader>y", '"+y', { noremap = false })
 map("n", "ZZ", "<cmd>wqa!<cr>")
 map("v", "<C-s>", "<Esc><cmd>w<cr>")
-map("v", "<leader>y", '"+y')
 
 -- window movement
 map("n", "<C-h>", "<cmd>wincmd h<cr>")
 map("n", "<C-j>", "<cmd>wincmd j<cr>")
 map("n", "<C-k>", "<cmd>wincmd k<cr>")
 map("n", "<C-l>", "<cmd>wincmd l<cr>")
+
+-- yank
+map("v", "<leader>y", ":OSCYank<cr>")
+map("n", "<leader>y", "<Plug>OSCYank", { noremap = false })
 
 -- neotest
 map("n", "[t", '<cmd>lua require("neotest").jump.prev({ status = "failed" })<CR>')

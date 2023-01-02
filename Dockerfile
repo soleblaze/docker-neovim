@@ -1,5 +1,12 @@
 FROM ubuntu:latest
 
+ARG fzfVersion=0.35.1
+ARG goVersion=1.19.4
+ARG lualsVersion=3.6.4
+ARG nodeVersion=18
+ARG rgVersion=13.0.0
+ARG terraformLspVersion=0.0.12
+
 ENV DEBIAN_FRONTEND noninteractive
 # Set the locale
 RUN apt-get update && apt-get -y install locales \
@@ -25,7 +32,7 @@ RUN apt-get update && apt-get full-upgrade -y \
   python3-pip \
   ruby \
   ruby-dev \
-  && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+  && curl -fsSL https://deb.nodesource.com/setup_${nodeVersion}.x | bash - \
   &&  curl -sLo /usr/share/keyrings/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg \
   && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
@@ -40,7 +47,7 @@ RUN curl -sLo /usr/local/bin/marksman https://github.com/artempyanykh/marksman/r
   && tar xf /shellcheck.tgz \
   && mv /shellcheck-stable/shellcheck /usr/local/bin \
   && rm -rf /shellcheck.tgz /shellcheck-stable \
-  && curl -sLo /tlsp.tgz https://github.com/juliosueiras/terraform-lsp/releases/download/v0.0.12/terraform-lsp_0.0.12_linux_amd64.tar.gz \
+  && curl -sLo /tlsp.tgz https://github.com/juliosueiras/terraform-lsp/releases/download/v${terraformLspVersion}/terraform-lsp_${terraformLspVersion}_linux_amd64.tar.gz \
   && mkdir /tlsp \
   && tar -C /tlsp -xf /tlsp.tgz \
   && mv /tlsp/terraform-lsp /usr/local/bin \
@@ -49,7 +56,7 @@ RUN curl -sLo /usr/local/bin/marksman https://github.com/artempyanykh/marksman/r
   && curl -sLo /usr/local/bin/tree-sitter.gz https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz \
   && gunzip /usr/local/bin/tree-sitter.gz \
   && chmod 755 /usr/local/bin/tree-sitter \
-  && curl -sLo /fzf.tgz https://github.com/junegunn/fzf/releases/download/0.35.1/fzf-0.35.1-linux_amd64.tar.gz \
+  && curl -sLo /fzf.tgz https://github.com/junegunn/fzf/releases/download/${fzfVersion}/fzf-${fzfVersion}-linux_amd64.tar.gz \
   && tar -C /usr/local/bin -xf /fzf.tgz \
   && rm /fzf.tgz \
   && curl -sLo /nvim.tgz https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
@@ -57,10 +64,10 @@ RUN curl -sLo /usr/local/bin/marksman https://github.com/artempyanykh/marksman/r
   && tar xf /nvim.tgz \
   && rm /nvim.tgz \
   && mv /nvim-linux64 /nvim \
-  && curl -sLo /go.tgz https://go.dev/dl/go1.19.4.linux-amd64.tar.gz \
+  && curl -sLo /go.tgz https://go.dev/dl/go${goVersion}.linux-amd64.tar.gz \
   && tar -C /usr/local -xf /go.tgz \
   && rm /go.tgz \
-  && curl -sLo /rg.deb https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb \
+  && curl -sLo /rg.deb https://github.com/BurntSushi/ripgrep/releases/download/${rgVersion}/ripgrep_${rgVersion}_amd64.deb \
   && dpkg -i /rg.deb \
   && rm /rg.deb \
   && gem install solargraph \
@@ -89,7 +96,7 @@ ENV PATH="$PATH:/usr/local/go/bin:/nvim/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/
 RUN cargo install --features lsp --locked taplo-cli
 
 # Install go binaries
-RUN curl -sLo /home/neovim/luals.tgz https://github.com/sumneko/lua-language-server/releases/download/3.6.4/lua-language-server-3.6.4-linux-x64.tar.gz \
+RUN curl -sLo /home/neovim/luals.tgz https://github.com/sumneko/lua-language-server/releases/download/${lualsVersion}/lua-language-server-${lualsVersion}-linux-x64.tar.gz \
   && mkdir /home/neovim/luals \
   && tar -C /home/neovim/luals -xf /home/neovim/luals.tgz \
   && rm -rf /home/neovim/luals.tgz \

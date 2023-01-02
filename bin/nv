@@ -4,7 +4,16 @@ if ! [ -d "$HOME/.cache/docker-nvim" ]; then
 fi
 
 if [ $# -gt 0 ]; then
-  if [ -f "${!#}" ]; then
+  if [ -f "${!#}" ] && git -C "$(dirname $(realpath ${!#}))" rev-parse 2>/dev/null; then
+    FILE="${!#//$(git -C "$(dirname $(realpath ${!#}))" rev-parse --show-toplevel)/}"
+    docker run --rm -it \
+      -v "$HOME/.config/gh:/home/neovim/.config/gh" \
+      -v "$HOME/Documents/vimwiki:/vimwiki" \
+      -v "$HOME/.cache/docker-nvim:/nv" \
+      -v "$(git -C "$(dirname $(realpath ${!#}))" rev-parse --show-toplevel):/work" \
+      ghcr.io/soleblaze/neovim:main \
+      "${@:1:${#}-1}" "/work/${FILE}"
+  elif [ -f "${!#}" ]; then
     FILE="${!#}"
     docker run --rm -it \
       -v "$HOME/.config/gh:/home/neovim/.config/gh" \
@@ -18,26 +27,26 @@ if [ $# -gt 0 ]; then
       -v "$HOME/.config/gh:/home/neovim/.config/gh" \
       -v "$HOME/Documents/vimwiki:/vimwiki" \
       -v "$HOME/.cache/docker-nvim:/nv" \
-      -v "$(realpath ${!#}):/work" \
+      -v "$(git -C "${!#}" rev-parse --show-toplevel):/work" \
       ghcr.io/soleblaze/neovim:main \
-      "${@:1:${#}-1}"
+      "${@:1:${#}-1}" +"Telescope find_files"
   elif git -C "${PWD}" rev-parse 2>/dev/null; then
     docker run --rm -it \
       -v "$HOME/.config/gh:/home/neovim/.config/gh" \
       -v "$HOME/Documents/vimwiki:/vimwiki" \
       -v "$HOME/.cache/docker-nvim:/nv" \
-      -v "$PWD:/work" \
+      -v "$(git -C "${PWD}" rev-parse --show-toplevel):/work" \
       ghcr.io/soleblaze/neovim:main \
-      "${@:1:${#}-1}"
+      "${@:1:${#}-1}" +"Telescope find_files"
   fi
 elif git -C "${PWD}" rev-parse 2>/dev/null; then
   docker run --rm -it \
     -v "$HOME/.config/gh:/home/neovim/.config/gh" \
     -v "$HOME/Documents/vimwiki:/vimwiki" \
     -v "$HOME/.cache/docker-nvim:/nv" \
-    -v "$PWD:/work" \
-    ghcr.io/soleblaze/neovim:maint \
+    -v "$(git -C "${PWD}" rev-parse --show-toplevel):/work" \
+    ghcr.io/soleblaze/neovim:main \
     +"Telescope find_files"
 else
-  echo "Error: not a file or git repo"
+  echo "Error: not a file or git directory"
 fi

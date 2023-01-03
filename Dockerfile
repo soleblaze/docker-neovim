@@ -32,6 +32,9 @@ RUN apt-get update && apt-get full-upgrade -y \
   python3-pip \
   ruby \
   ruby-dev \
+  sqlite3 \
+  w3m \
+  wget \
   && curl -fsSL https://deb.nodesource.com/setup_${nodeVersion}.x | bash - \
   &&  curl -sLo /usr/share/keyrings/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg \
   && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -91,7 +94,7 @@ RUN groupadd neovim && useradd -g neovim -ms /bin/bash neovim \
 USER neovim
 WORKDIR /home/neovim
 ENV HOME="/home/neovim"
-ENV PATH="$PATH:/usr/local/go/bin:/nvim/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/luals/bin"
+ENV PATH="$PATH:/usr/local/go/bin:/nvim/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/luals/bin:$HOME/dasht/bin"
 
 RUN cargo install --features lsp --locked taplo-cli
 
@@ -127,6 +130,16 @@ RUN curl -sLo /home/neovim/luals.tgz https://github.com/sumneko/lua-language-ser
   && pip3 install --user black \
   && pip3 install --user cmake-language-server \
   && pip3 install --user pyright
+
+RUN git clone https://github.com/sunaku/dasht.git /home/neovim/dasht \
+  && /home/neovim/dasht/bin/dasht-docsets-install -f \
+  "^ansible$" \
+  "^go$" \
+  "^jinja$" \
+  "^markdown$" \
+  "^postgresql$" \
+  "^python_3$" \
+  "^ruby$"
 
 COPY linters/golangci.yml /home/neovim/.golangci.yml
 COPY linters/markdownlint.yaml /home/neovim/.markdownlint.yaml

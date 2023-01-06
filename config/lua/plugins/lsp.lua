@@ -37,7 +37,16 @@ return {
     lspconfig.solargraph.setup({ on_attach = default_on_attach })
     lspconfig.taplo.setup({ on_attach = default_on_attach })
     lspconfig.terraformls.setup({ on_attach = default_on_attach })
-    lspconfig.yamlls.setup({ on_attach = default_on_attach })
+    lspconfig.yamlls.setup({
+      on_attach = function(_, bufnr)
+        if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
+          vim.diagnostic.disable(bufnr)
+          vim.defer_fn(function()
+            vim.diagnostic.reset(nil, bufnr)
+          end, 1000)
+        end
+      end
+    })
 
     lspconfig.gopls.setup({
       on_attach = default_on_attach,
@@ -48,13 +57,33 @@ return {
       },
     })
 
+    local runtime_path = vim.split(package.path, ';')
+    table.insert(runtime_path, 'lua/?.lua')
+    table.insert(runtime_path, 'lua/?/init.lua')
+
     lspconfig.sumneko_lua.setup({
       on_attach = default_on_attach,
       settings = {
         Lua = {
-          diagnostics = {
-            globals = { "vim", "use" },
+          -- Disable telemetry
+          telemetry = { enable = false },
+          runtime = {
+            -- Tell the language server which version of Lua you're using
+            -- (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT',
+            path = runtime_path,
           },
+          diagnostics = {
+            -- Get the language server to recognize the `vim` global
+            globals = { 'vim' }
+          },
+          workspace = {
+            library = {
+              -- Make the server aware of Neovim runtime files
+              vim.fn.expand('$VIMRUNTIME/lua'),
+              vim.fn.stdpath('config') .. '/lua'
+            }
+          }
         },
       },
     })

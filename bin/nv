@@ -9,7 +9,6 @@ if [ $# -gt 0 ]; then
 		FILE="${FILEPATH//$(git -C "$(dirname $(realpath ${!#}))" rev-parse --show-toplevel)/}"
 		docker run --rm -it \
 			-v "$HOME/.config/gh:/home/neovim/.config/gh" \
-			-v "$HOME/Documents/vimwiki:/vimwiki" \
 			-v "$HOME/.cache/docker-nvim:/nv" \
 			-v "$(git -C "$(dirname $(realpath ${!#}))" rev-parse --show-toplevel):/work" \
 			ghcr.io/soleblaze/neovim:main \
@@ -18,7 +17,6 @@ if [ $# -gt 0 ]; then
 		FILE="${!#}"
 		docker run --rm -it \
 			-v "$HOME/.config/gh:/home/neovim/.config/gh" \
-			-v "$HOME/Documents/vimwiki:/vimwiki" \
 			-v "$HOME/.cache/docker-nvim:/nv" \
 			-v "$(realpath "${FILE}"):/work/${FILE##*/}" \
 			ghcr.io/soleblaze/neovim:main \
@@ -26,7 +24,6 @@ if [ $# -gt 0 ]; then
 	elif git -C "${!#}" rev-parse 2>/dev/null; then
 		docker run --rm -it \
 			-v "$HOME/.config/gh:/home/neovim/.config/gh" \
-			-v "$HOME/Documents/vimwiki:/vimwiki" \
 			-v "$HOME/.cache/docker-nvim:/nv" \
 			-v "$(git -C "${!#}" rev-parse --show-toplevel):/work" \
 			ghcr.io/soleblaze/neovim:main \
@@ -34,7 +31,6 @@ if [ $# -gt 0 ]; then
 	elif git -C "${PWD}" rev-parse 2>/dev/null; then
 		docker run --rm -it \
 			-v "$HOME/.config/gh:/home/neovim/.config/gh" \
-			-v "$HOME/Documents/vimwiki:/vimwiki" \
 			-v "$HOME/.cache/docker-nvim:/nv" \
 			-v "$(git -C "${PWD}" rev-parse --show-toplevel):/work" \
 			ghcr.io/soleblaze/neovim:main \
@@ -43,7 +39,6 @@ if [ $# -gt 0 ]; then
 elif git -C "${PWD}" rev-parse 2>/dev/null; then
 	docker run --rm -it \
 		-v "$HOME/.config/gh:/home/neovim/.config/gh" \
-		-v "$HOME/Documents/vimwiki:/vimwiki" \
 		-v "$HOME/.cache/docker-nvim:/nv" \
 		-v "$(git -C "${PWD}" rev-parse --show-toplevel):/work" \
 		ghcr.io/soleblaze/neovim:main \

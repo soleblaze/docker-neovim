@@ -4,5 +4,4 @@ return {
   "towolf/vim-helm",
   "tpope/vim-fugitive",
   "tpope/vim-unimpaired",
-  "vimwiki/vimwiki"
 }

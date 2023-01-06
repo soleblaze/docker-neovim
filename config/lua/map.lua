@@ -100,11 +100,6 @@ map("n", "<leader>k", ":call Dasht(dasht#cursor_search_terms())<CR>")
 map("v", "<leader><leader>k", "y:<C-U>call Dasht(getreg(0), '!' )<CR>")
 map("v", "<leader>k", "y:<C-U>call Dasht(getreg(0))<CR>")
 
--- vimwiki
-map("n", "<leader>wf", "<cmd>lua require('telescope').extensions.vimwiki.vimwiki()<cr>")
-map("n", "<leader>wg", "<cmd>lua require('telescope').extensions.vw.live_grep()<cr>")
-map("n", "<leader>wn", "<cmd>lua require('telescope').extensions.vw.link()<cr>")
-
 -- Which Key Mappings
 local wk = require("which-key")
 wk.register({

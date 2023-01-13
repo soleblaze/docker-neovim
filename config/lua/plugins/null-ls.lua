@@ -28,7 +28,9 @@ return {
         null_ls.builtins.formatting.prettier.with({
           disabled_filetypes = { "go" },
         }),
-        null_ls.builtins.formatting.shfmt,
+        null_ls.builtins.formatting.shfmt.with({
+          args = { "-i", "2", "-filename", "$FILENAME" }
+        }),
         null_ls.builtins.formatting.trim_whitespace.with({
           disabled_filetypes = { "go" },
         }),

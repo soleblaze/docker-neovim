@@ -28,6 +28,7 @@ return {
         null_ls.builtins.formatting.fixjson,
         null_ls.builtins.formatting.prettier.with({
           disabled_filetypes = { "go", "yaml" },
+          extra_args = { "--prose-wrap", "always" }
         }),
         null_ls.builtins.formatting.shfmt.with({
           args = { "-i", "2", "-filename", "$FILENAME" }

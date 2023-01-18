@@ -1,5 +1,6 @@
 FROM ubuntu:latest
 
+ARG cbfVersion=0.2.0
 ARG fzfVersion=0.35.1
 ARG goVersion=1.19.4
 ARG lualsVersion=3.6.4
@@ -62,6 +63,9 @@ RUN curl -sLo /usr/local/bin/marksman https://github.com/artempyanykh/marksman/r
   && curl -sLo /fzf.tgz https://github.com/junegunn/fzf/releases/download/${fzfVersion}/fzf-${fzfVersion}-linux_amd64.tar.gz \
   && tar -C /usr/local/bin -xf /fzf.tgz \
   && rm /fzf.tgz \
+  && curl -sLo cbfmt.tgz https://github.com/lukas-reineke/cbfmt/releases/download/v${cbfVersion}/cbfmt_linux-x86_64_v${cbfVersion}.tar.gz \
+  && tar -C /usr/local/bin --strip-components=1 -xf /cbfmt.tgz cbfmt_linux-x86_64_v${cbfVersion}/cbfmt \
+  && rm /cbfmt.tgz \
   && curl -sLo /nvim.tgz https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
   && mkdir /neovim \
   && tar xf /nvim.tgz \
@@ -145,6 +149,7 @@ RUN git clone https://github.com/sunaku/dasht.git /home/neovim/dasht \
 COPY linters/golangci.yml /home/neovim/.golangci.yml
 COPY linters/markdownlint.yaml /home/neovim/.markdownlint.yaml
 COPY linters/yamllint.yml /home/neovim/.config/yamllint/config
+COPY linters/cbfmt.toml /home/neovim/.cbfmt.toml
 COPY config /home/neovim/.config/nvim
 
 USER root

@@ -25,6 +25,9 @@ return {
         null_ls.builtins.diagnostics.write_good,
         null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.formatting.black,
+        null_ls.builtins.formatting.cbfmt.with({
+          extra_args = { "--config", "/home/neovim/.cbfmt.toml" }
+        }),
         null_ls.builtins.formatting.fixjson,
         null_ls.builtins.formatting.prettier.with({
           disabled_filetypes = { "go", "yaml" },

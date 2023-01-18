@@ -38,6 +38,7 @@ vim.opt.wrap = true -- Use word wrapping
 vim.opt.backup = false
 vim.opt.backupdir = "/nv/backup"
 vim.opt.writebackup = false
+vim.opt.spellfile = "/nv/spell/en.utf-8.add"
 
 -- Undo settings
 vim.opt.undodir = "/nv/undo"

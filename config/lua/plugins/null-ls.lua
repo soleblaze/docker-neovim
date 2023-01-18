@@ -23,10 +23,11 @@ return {
         }),
         null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.diagnostics.write_good,
+        null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.formatting.black,
         null_ls.builtins.formatting.fixjson,
         null_ls.builtins.formatting.prettier.with({
-          disabled_filetypes = { "go" },
+          disabled_filetypes = { "go", "yaml" },
         }),
         null_ls.builtins.formatting.shfmt.with({
           args = { "-i", "2", "-filename", "$FILENAME" }

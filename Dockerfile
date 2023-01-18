@@ -129,7 +129,8 @@ RUN curl -sLo /home/neovim/luals.tgz https://github.com/sumneko/lua-language-ser
   && pip3 install --user ansible-lint \
   && pip3 install --user black \
   && pip3 install --user cmake-language-server \
-  && pip3 install --user pyright
+  && pip3 install --user pyright \
+  && pip3 install --user yamllint
 
 RUN git clone https://github.com/sunaku/dasht.git /home/neovim/dasht \
   && /home/neovim/dasht/bin/dasht-docsets-install -f \

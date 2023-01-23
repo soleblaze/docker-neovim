@@ -130,6 +130,7 @@ RUN curl -sLo /home/neovim/luals.tgz https://github.com/sumneko/lua-language-ser
   && go install gotest.tools/gotestsum@latest \
   && go install mvdan.cc/gofumpt@latest \
   && go install mvdan.cc/sh/v3/cmd/shfmt@latest \
+  && go install github.com/abice/go-enum@latest \
   && pip3 install --user ansible-lint \
   && pip3 install --user black \
   && pip3 install --user cmake-language-server \

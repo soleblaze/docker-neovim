@@ -46,7 +46,6 @@ map("n", "<leader>;", "<C-w>v")
 map("n", "<leader>P", '"+P')
 map("n", "<leader>d", "<cmd>bdelete!<cr>")
 map("n", "<leader>p", '"+p')
-map("n", "<leader>rv", "<cmd>source $MYVIMRC<cr>")
 map("n", "ZZ", "<cmd>wqa!<cr>")
 map("v", "<C-s>", "<Esc><cmd>w<cr>")
 
@@ -55,6 +54,15 @@ map("n", "<C-h>", "<cmd>wincmd h<cr>")
 map("n", "<C-j>", "<cmd>wincmd j<cr>")
 map("n", "<C-k>", "<cmd>wincmd k<cr>")
 map("n", "<C-l>", "<cmd>wincmd l<cr>")
+
+-- refactoring
+map("v", "<leader>re", "<Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>")
+map("v", "<leader>re", "<Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>")
+map("v", "<leader>rf", "<Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>")
+map("v", "<leader>ri", "<Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>")
+map("v", "<leader>rr", "<Cmd>lua require('refactoring').select_refactor()<CR>")
+map("v", "<leader>rv", "<Cmd>lua require('refactoring').debug.print_var({})<CR>")
+map("v", "<leader>rv", "<Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>")
 
 -- yank
 map("v", "<leader>y", ":OSCYank<cr>")
@@ -193,6 +201,16 @@ wk.register({
     o = { '<cmd>lua require("neotest").output.open({ enter = true })<CR>', "Output" },
     s = { '<cmd>lua require("neotest").summary.toggle()<CR>', "Summary" },
     x = { '<cmd>lua require("neotest").run.stop()<CR>', "Stop" },
+  },
+  r = {
+    name = "+Refactor",
+    b = { "<Cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract Block" },
+    c = { "<cmd>lua require('refactoring').debug.cleanup({})<CR>", "Debug Cleanup" },
+    f = { "<Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract Block to File" },
+    i = { "<Cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline Var" },
+    p = { "<cmd>lua require('refactoring').debug.printf({below = false})<CR>", "Debug" },
+    r = { "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Telescope" },
+    v = { "<cmd>lua require('refactoring').debug.print_var({ normal = true })<CR>", "Debug Print Var" },
   },
   w = {
     name = "+Window",

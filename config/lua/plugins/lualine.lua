@@ -8,12 +8,6 @@ return {
 
     local cobalt2 = require("lualine.themes.cobalt2custom")
 
-    vim.g.bufferline = {
-      closable = true,
-      clickable = false,
-      maximum_padding = 1,
-    }
-
     local navic = require("nvim-navic")
 
     require("lualine").setup({

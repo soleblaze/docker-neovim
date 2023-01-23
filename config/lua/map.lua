@@ -47,6 +47,12 @@ map("n", "<leader>P", '"+P')
 map("n", "<leader>d", "<cmd>bdelete!<cr>")
 map("n", "<leader>p", '"+p')
 map("n", "ZZ", "<cmd>wqa!<cr>")
+map("n", "[l", "<cmd>lprevious<CR>")
+map("n", "[q", "<cmd>cprevious<CR>")
+map("n", "[t", "<cmd>tprevious<CR>")
+map("n", "]l", "<cmd>lnext<CR>")
+map("n", "]q", "<cmd>cnext<CR>")
+map("n", "]t", "<cmd>tnext<CR>")
 map("v", "<C-s>", "<Esc><cmd>w<cr>")
 
 -- window movement

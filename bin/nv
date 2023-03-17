@@ -4,7 +4,7 @@ if ! [ -d "$HOME/.cache/podman-nvim" ]; then
 fi
 
 if [ $# -gt 0 ]; then
-  if ! [ -e "${!#}" ] && [ -d "$(dirname $(realpath ${!#}))" ]; then
+  if ! [ -e "${!#}" ] && [ -d "$(dirname ${!#})" ]; then
     touch "${!#}"
   fi
   if [ -f "${!#}" ] && git -C "$(dirname $(realpath ${!#}))" rev-parse 2>/dev/null; then

@@ -1,5 +1,5 @@
 build:
-	docker build -t "ghcr.io/soleblaze/neovim:main" --no-cache .
+	podman build -t "ghcr.io/soleblaze/neovim:main" --no-cache .
 
 build-cache:
-	docker build -t "ghcr.io/soleblaze/neovim:main" .
+	podman build -t "ghcr.io/soleblaze/neovim:main" .

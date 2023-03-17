@@ -1,40 +1,43 @@
 #!/bin/bash
-if ! [ -d "$HOME/.cache/docker-nvim" ]; then
-  mkdir -p "$HOME/.cache/docker-nvim"
+if ! [ -d "$HOME/.cache/podman-nvim" ]; then
+  mkdir -p "$HOME/.cache/podman-nvim"
 fi
 
 if [ $# -gt 0 ]; then
+  if ! [ -e "${!#}" ] && [ -d "$(dirname $(realpath ${!#}))" ]; then
+    touch "${!#}"
+  fi
   if [ -f "${!#}" ] && git -C "$(dirname $(realpath ${!#}))" rev-parse 2>/dev/null; then
     FILEPATH="$(realpath ${!#})"
     FILE="${FILEPATH//$(git -C "$(dirname $(realpath ${!#}))" rev-parse --show-toplevel)/}"
-    docker run --rm -it \
-      -v "$HOME/.cache/docker-nvim:/nv" \
+    podman run --userns=keep-id:uid=1000,gid=1000 --rm -it \
+      -v "$HOME/.cache/podman-nvim:/nv" \
       -v "$(git -C "$(dirname $(realpath ${!#}))" rev-parse --show-toplevel):/work" \
       ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}" "/work/${FILE}"
   elif [ -f "${!#}" ]; then
     FILE="${!#}"
-    docker run --rm -it \
-      -v "$HOME/.cache/docker-nvim:/nv" \
+    podman run --userns=keep-id:uid=1000,gid=1000 --rm -it \
+      -v "$HOME/.cache/podman-nvim:/nv" \
       -v "$(realpath "${FILE}"):/work/${FILE##*/}" \
       ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}" "/work/${FILE##*/}"
   elif git -C "${!#}" rev-parse 2>/dev/null; then
-    docker run --rm -it \
-      -v "$HOME/.cache/docker-nvim:/nv" \
+    podman run --userns=keep-id:uid=1000,gid=1000 --rm -it \
+      -v "$HOME/.cache/podman-nvim:/nv" \
       -v "$(git -C "${!#}" rev-parse --show-toplevel):/work" \
       ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}" +"Telescope find_files"
   elif git -C "${PWD}" rev-parse 2>/dev/null; then
-    docker run --rm -it \
-      -v "$HOME/.cache/docker-nvim:/nv" \
+    podman run --userns=keep-id:uid=1000,gid=1000 --rm -it \
+      -v "$HOME/.cache/podman-nvim:/nv" \
       -v "$(git -C "${PWD}" rev-parse --show-toplevel):/work" \
       ghcr.io/soleblaze/neovim:main \
       "${@:1:${#}-1}" +"Telescope find_files"
   fi
 elif git -C "${PWD}" rev-parse 2>/dev/null; then
-  docker run --rm -it \
-    -v "$HOME/.cache/docker-nvim:/nv" \
+  podman run --userns=keep-id:uid=1000,gid=1000 --rm -it \
+    -v "$HOME/.cache/podman-nvim:/nv" \
     -v "$(git -C "${PWD}" rev-parse --show-toplevel):/work" \
     ghcr.io/soleblaze/neovim:main \
     +"Telescope find_files"
